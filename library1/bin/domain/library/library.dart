@@ -5,19 +5,6 @@ import '../librarian/librarian.dart';
 import '../reader/reader.dart';
 
 class Library implements GetData {
-  final List<Book> books;
-  final List<Librarian> librarian;
-  final List<Reader> reader;
-
-  static Library? _instance;
-
-  Library._(this.books, this.librarian, this.reader);
-
-  static Library getInstance(
-      List<Book> books, List<Reader> readers, List<Librarian> librarians) {
-    _instance ??= Library._(books, librarians, readers);
-    return _instance!;
-  }
   Repository repository = Repository();
 
   @override
@@ -30,17 +17,17 @@ class Library implements GetData {
   List<Librarian> getLibrarian() => repository.fetchLibrarians();
 
   void addBook(Book book) {
-    books.add(book);
+    repository.fetchBooks().add(book);
   }
 
   void returnBook(Book book) {
-    books.remove(book);
+    repository.fetchBooks().remove(book);
   }
 
   Book? searchBookByTitle(String title) {
-    for (int i = 0; books.length < i; i++) {
-      if (books[i].title == title) {
-        return books[i];
+    for (int i = 0; repository.fetchBooks().length < i; i++) {
+      if (repository.fetchBooks()[i].title == title) {
+        return repository.fetchBooks()[i];
       }
     }
 
@@ -48,31 +35,36 @@ class Library implements GetData {
   }
 
   Book? searchBookByAuthor(String author) {
-    for (int i = 0; books.length < i; i++) {
-      if (books[i].author == author) {
-        return books[i];
+    for (int i = 0; repository.fetchBooks().length < i; i++) {
+      if (repository.fetchBooks()[i].author == author) {
+        return repository.fetchBooks()[i];
       }
     }
     return null;
   }
+
   @override
   String toString() {
-    return 'Информация о всех книгах, которые хранятся в библиотеке $books';
+    return 'Информация о всех книгах, которые хранятся в библиотеке ${repository.fetchBooks()}';
   }
-  void readerTakeBook(Reader reader, Book book,int libraryCard){
-    if(reader.libraryCard==libraryCard){
+
+  void readerTakeBook(Reader reader, Book book, int libraryCard) {
+    if (reader.libraryCard == libraryCard) {
       reader.getBook(book);
     }
   }
-  void readerReturnBook(Reader reader, Book book, int libraryCard){
-    if(reader.libraryCard==libraryCard){
+
+  void readerReturnBook(Reader reader, Book book, int libraryCard) {
+    if (reader.libraryCard == libraryCard) {
       reader.giveAwayBook(book);
     }
   }
-  void librarianAddBookInLibrary(Book book, Librarian librarian){
-    books.add(book);
+
+  void librarianAddBookInLibrary(Book book, Librarian librarian) {
+    repository.fetchBooks().add(book);
   }
-  void librarianDeleteBookFromLibrary(Book book, Librarian librarian){
-    books.remove(book);
+
+  void librarianDeleteBookFromLibrary(Book book, Librarian librarian) {
+    repository.fetchBooks().remove(book);
   }
 }
