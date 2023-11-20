@@ -1,31 +1,66 @@
+import 'package:test/test.dart';
+
 import '../../domain/book/Book.dart';
 import '../../domain/librarian/librarian.dart';
 import '../../domain/reader/reader.dart';
+import '../getData/getdata.dart';
+import '../storage/storage.dart';
 
-class Repository {
-  static const List<Book> _books = [
-    Book(10, 'Valera', 'Chronic', 500),
-    Book(23, 'Mefody', 'Uchenie', 1000),
-    Book(100, 'Noname', 'ZXC', 5000),
-    Book(45, 'Vadis', 'Besedka', 1),
-    Book(89, 'Tolstoi', 'Voina i mir', 80000),
-    Book(100, "Griboedov", 'Gore ot uma', 6000)
-  ];
-  static const List<Librarian> _librarians = [
-    Librarian('Vasya', 1488),
-    Librarian('Gena', 228),
-    Librarian('Sasha', 1337)
-  ];
-  static const List<Reader> _readers = [
-    Reader('Valeron', 21, 10205220, []),
-    Reader('Vadis', 20, 10205221, []),
-    Reader('Oleg', 32, 10205222, []),
-    Reader('Den', 105, 10205223, [])
-  ];
+class Repository implements GetData {
+  Storage storage = Storage();
 
-  List<Reader> fetchReaders() => List.from(_readers);
+  @override
+  List<Book> getBooks() => storage.fetchBook();
 
-  List<Librarian> fetchLibrarians() => List.from(_librarians);
+  @override
+  List<Librarian> getLibrarian() => storage.fetchLibrarian();
 
-  List<Book> fetchBooks() => List.from(_books);
+  @override
+  List<Reader> getReaders() => List.from(storage.fetchReaders());
+
+  void readerTakeBook(Reader reader, Book book, int libraryCard) {
+    for (int i = 0; i < getReaders().length; i++) {
+      if (reader.libraryCard == libraryCard) {
+        reader.getBook(book);
+        getBooks().remove(book);
+      }
+    }
+  }
+
+  void readerReturnBook(Reader reader, Book book, int libraryCard) {
+    for (int i = 0; i < getReaders().length; i++) {
+      if (reader.libraryCard == libraryCard) {
+        reader.giveAwayBook(book);
+        getBooks().add(book);
+      }
+    }
+  }
+
+  List<Book> librarianAddBook(Librarian librarian, Book book) {
+    List<Book> books = getBooks();
+    books.add(book);
+    return books;
+  }
+
+  void librarianRemoveBook(Librarian librarian, Book book) {
+    getBooks().remove(book);
+  }
+
+  Book? searchBookByAuthor(String author) {
+    for (int i = 0; getBooks().length > i; i++) {
+      if (getBooks()[i].author == author) {
+        return getBooks()[i];
+      }
+    }
+    return null;
+  }
+
+  Book? searchBookByTitle(String title) {
+    for (int i = 0; getBooks().length > i; i++) {
+      if (getBooks()[i].title == title) {
+        return getBooks()[i];
+      }
+    }
+    return null;
+  }
 }

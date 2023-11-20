@@ -8,9 +8,12 @@ class Reader {
 
   const Reader(this.name, this.age, this.libraryCard, this.books);
 
-  void getBook(Book book) {
+ void getBook(Book book) {
     if (books.length < 3) {
       books.add(book);
+    }
+    else{
+      print('У вас перебор книг');
     }
   }
 
