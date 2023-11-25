@@ -4,24 +4,15 @@ class Reader {
   final String name;
   final int age;
   final int libraryCard;
-  final List<Book> books;
+  final List<Book> _books;
+  final int id;
 
-  const Reader(this.name, this.age, this.libraryCard, this.books);
+  Reader(this.name, this.age, this.libraryCard, this._books, this.id);
 
- void getBook(Book book) {
-    if (books.length < 3) {
-      books.add(book);
-    }
-    else{
-      print('У вас перебор книг');
-    }
-  }
+  List<Book> get books => _books;
 
-  void giveAwayBook(Book book) {
-    books.remove(book);
-  }
-
+  @override
   String toString() {
-    return 'Name: $name Books: $books Library card: $libraryCard, Age: $age';
+    return 'Name: $name Books: $_books Library card: $libraryCard, Age: $age';
   }
 }

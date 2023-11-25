@@ -10,7 +10,7 @@ class Repository implements GetData {
   Storage storage = Storage();
 
   @override
-  List<Book> getBooks() => storage.fetchBook();
+  List<Book> getBooks() => storage.fetchBooks();
 
   @override
   List<Librarian> getLibrarian() => storage.fetchLibrarian();
@@ -18,36 +18,31 @@ class Repository implements GetData {
   @override
   List<Reader> getReaders() => List.from(storage.fetchReaders());
 
-  void readerTakeBook(Reader reader, Book book, int libraryCard) {
+  @override
+  List<Book>? getBook(Book book, int id) {
     for (int i = 0; i < getReaders().length; i++) {
-      if (reader.libraryCard == libraryCard) {
-        reader.getBook(book);
-        getBooks().remove(book);
+      if (getReaders()[i].id == id) {
+        getReaders()[i].books.add(book);
+        return getReaders()[i].books;
       }
     }
+    return null;
   }
 
-  void readerReturnBook(Reader reader, Book book, int libraryCard) {
+  @override
+  List<Book>? returnBook(Book book, int id) {
     for (int i = 0; i < getReaders().length; i++) {
-      if (reader.libraryCard == libraryCard) {
-        reader.giveAwayBook(book);
-        getBooks().add(book);
+      if (getReaders()[i].id == id) {
+        getReaders()[i].books.remove(book);
+        return getReaders()[i].books;
       }
     }
+    return null;
   }
 
-  List<Book> librarianAddBook(Librarian librarian, Book book) {
-    List<Book> books = getBooks();
-    books.add(book);
-    return books;
-  }
-
-  void librarianRemoveBook(Librarian librarian, Book book) {
-    getBooks().remove(book);
-  }
-
-  Book? searchBookByAuthor(String author) {
-    for (int i = 0; getBooks().length > i; i++) {
+  @override
+  Book? findBookByAuthor(String author) {
+    for (int i = 0; i < getBooks().length; i++) {
       if (getBooks()[i].author == author) {
         return getBooks()[i];
       }
@@ -55,12 +50,47 @@ class Repository implements GetData {
     return null;
   }
 
-  Book? searchBookByTitle(String title) {
-    for (int i = 0; getBooks().length > i; i++) {
+  @override
+  Book? findBookByTitle(String title) {
+    for (int i = 0; i < getBooks().length; i++) {
       if (getBooks()[i].title == title) {
         return getBooks()[i];
       }
     }
     return null;
+  }
+
+  @override
+  List<Book> addBookInLibrary(Book book) {
+    storage.addBookInLibrary(book);
+    return getBooks();
+  }
+
+  @override
+  List<Book> removeBookFromLibrary(Book book) {
+    storage.removeBookFromLibrary(book);
+    return getBooks();
+  }
+
+  @override
+  List<Book> addBookByLibrarian(Book book, int id) {
+    for (int i = 0; i < getLibrarian().length; i++) {
+      if (getLibrarian()[i].id == id) {
+        storage.fetchBooks().add(book);
+        return getBooks();
+      }
+    }
+    return getBooks();
+  }
+
+  @override
+  List<Book> removeBookByLibrarian(Book book, int id) {
+    for (int i = 0; i < getLibrarian().length; i++) {
+      if (getLibrarian()[i].id == id) {
+        storage.fetchBooks().remove(book);
+        return getBooks();
+      }
+    }
+    return getBooks();
   }
 }

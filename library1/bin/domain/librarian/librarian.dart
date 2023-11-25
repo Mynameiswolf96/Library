@@ -1,11 +1,11 @@
-import '../book/Book.dart';
-import '../library/library.dart';
+
 
 class Librarian {
   final String name;
   final int serviceCardNumber;
+  final int id;
 
-  const Librarian(this.name, this.serviceCardNumber);
+  const Librarian(this.name, this.serviceCardNumber, this.id);
 
   @override
   String toString() {
