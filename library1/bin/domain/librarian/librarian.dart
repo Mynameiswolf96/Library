@@ -1,5 +1,3 @@
-
-
 class Librarian {
   final String name;
   final int serviceCardNumber;

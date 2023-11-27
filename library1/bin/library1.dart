@@ -1,23 +1,24 @@
 import 'package:library1/library1.dart' as library1;
-
-import 'data/getData/getdata.dart';
 import 'data/repository/repository.dart';
+import 'data/repositoryimpl/repositoryimpl.dart';
 import 'domain/book/Book.dart';
 
 void main(List<String> arguments) {
-  GetData getData = Repository();
+  Repository getData = RepositoryImpl();
 
   print(getData.getBooks());
-  print(getData.addBookInLibrary(Book(23, 'Pelevin', 'Hui', 3123123, 324)));
+  (getData.addBook(Book(23, 'Pelevin', 'Hui', 3123123, 324)));
   print(getData.getBooks());
-  print(getData.removeBookFromLibrary(getData.getBooks().first));
+  (getData.removeBook(getData.getBooks().first));
   print(getData.getBooks());
-  getData.getBook(getData.getBooks().first, 100);
+  getData.getBookLoan(getData.getBooks().first, 100);
   print(getData.getReaders().first);
-  getData.returnBook(getData.getReaders().first.books.first, 100);
+  getData.returnBookFromLoan(getData.getReaders().first.books.first, 100);
   print(getData.getReaders().first);
-  getData.addBookByLibrarian(getData.getBooks().first, 10);
+  (getData.addBook(Book(23, 'Ez', 'Hui', 3123123, 324)));
   print(getData.getBooks());
   print(getData.findBookByAuthor('Mefody'));
   print(getData.findBookByTitle('Gore ot um'));
+  getData.getBookLoan(getData.getBooks().first, 112);
+  print(getData.getReaders().first);
 }
