@@ -24,6 +24,7 @@ class RepositoryImpl implements Repository {
       final reader = getReaders().firstWhere((reader) => reader.id == readerId);
       final book = getBooks().firstWhere((book) => book.id == bookId);
       reader.books.add(book);
+      storage.removeBookFromLibrary(book);
       return true;
     } catch (e) {
       print('Невозможно взять книгу');
@@ -37,6 +38,7 @@ class RepositoryImpl implements Repository {
       final reader = getReaders().firstWhere((reader) => reader.id == readerId);
       final book = getBooks().firstWhere((book) => book.id == bookId);
       reader.books.remove(book);
+      storage.addBookInLibrary(book);
       return true;
     } catch (e) {
       print('Невозможно вернуть книгу');
