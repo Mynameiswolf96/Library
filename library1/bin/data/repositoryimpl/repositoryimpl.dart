@@ -13,7 +13,7 @@ class RepositoryImpl implements Repository {
   List<Book> getBooks() => storage.fetchBooks();
 
   @override
-  List<Librarian> getLibrarians() => storage.fetchLibrarian();
+  List<Librarian> getLibrarians() => storage.fetchLibrarians();
 
   @override
   List<Reader> getReaders() => storage.fetchReaders();
@@ -27,7 +27,6 @@ class RepositoryImpl implements Repository {
       storage.removeBookFromLibrary(book);
       return true;
     } catch (e) {
-      print('Невозможно взять книгу');
       return false;
     }
   }
@@ -41,7 +40,6 @@ class RepositoryImpl implements Repository {
       storage.addBookInLibrary(book);
       return true;
     } catch (e) {
-      print('Невозможно вернуть книгу');
       return false;
     }
   }
@@ -61,9 +59,9 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  void addBook(Book book, int id) {
+  void addBook(Book book, int librarianId) {
     getLibrarians().forEach((librarian) {
-      if (librarian.id == id) {
+      if (librarian.id == librarianId) {
         storage.addBookInLibrary(book);
       }
     });

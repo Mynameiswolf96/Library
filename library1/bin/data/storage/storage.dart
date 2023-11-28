@@ -33,7 +33,7 @@ class Storage {
 
   List<Book> fetchBooks() => List.from(_books);
 
-  List<Librarian> fetchLibrarian() => List.from(_librarians);
+  List<Librarian> fetchLibrarians() => List.from(_librarians);
 
   List<Reader> fetchReaders() => List.from(_readers);
 }
