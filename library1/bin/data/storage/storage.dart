@@ -4,7 +4,7 @@ import '../../domain/reader/reader.dart';
 
 class Storage {
   final List<Book> _books = [
-    Book(10, 'Valera', 'Chronic', 500, 112),
+    Book(10, 'Valera', 'Chronic', 500, 1),
     Book(23, 'Mefody', 'Uchenie', 1000, 113),
     Book(100, 'Noname', 'ZXC', 5000, 114),
     Book(45, 'Vadis', 'Besedka', 1, 115),
@@ -17,20 +17,18 @@ class Storage {
     Librarian('Sasha', 1337, 12)
   ];
   final List<Reader> _readers = [
-    Reader('Valeron', 21, 10205220, [], 100),
-    Reader('Vadis', 20, 10205221, [], 101),
-    Reader('Oleg', 32, 10205222, [], 102),
-    Reader('Den', 105, 10205223, [], 103)
+    Reader('Valeron', DateTime(2022, 12, 4), 10205220, [], 1),
+    Reader('Vadis', DateTime(2001, 10, 5), 10205221, [], 101),
+    Reader('Oleg', DateTime(1980, 5, 3), 10205222, [], 102),
+    Reader('Den', DateTime(1870, 12, 4), 10205223, [], 103)
   ];
 
-  List<Book> addBookInLibrary(Book book) {
+  void addBookInLibrary(Book book) {
     _books.add(book);
-    return _books;
   }
 
-  List<Book> removeBookFromLibrary(Book book) {
+  void removeBookFromLibrary(Book book) {
     _books.remove(book);
-    return _books;
   }
 
   List<Book> fetchBooks() => List.from(_books);

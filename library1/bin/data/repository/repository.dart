@@ -11,15 +11,15 @@ abstract interface class Repository {
 
   List<Librarian> getLibrarians();
 
-  void getBookLoan(Book book, int id);
+  bool getBookLoan(int readerId, int bookId);
 
-  void returnBookFromLoan(Book book, int id);
+  bool returnBookFromLoan(int readerId, int id);
 
-  void addBook(Book book);
+  void addBook(Book book,int id);
 
-  void removeBook(Book book);
+  void removeBook(Book book,int id);
 
-  List<Book> findBookByAuthor(String author);
+  List<Book> findBooksByAuthor(String author);
 
-  List<Book> findBookByTitle(String title);
+  List<Book> findBooksByTitle(String title);
 }

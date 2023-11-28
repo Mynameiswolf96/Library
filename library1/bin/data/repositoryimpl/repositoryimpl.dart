@@ -19,42 +19,60 @@ class RepositoryImpl implements Repository {
   List<Reader> getReaders() => storage.fetchReaders();
 
   @override
-  void getBookLoan(Book book, int id) {
-    getReaders().where((reader) => reader.id == id).forEach((reader) {
+  bool getBookLoan(int readerId, int bookId) {
+    try {
+      final reader = getReaders().firstWhere((reader) => reader.id == readerId);
+      final book = getBooks().firstWhere((book) => book.id == bookId);
       reader.books.add(book);
-    });
-    removeBook(book);
+      return true;
+    } catch (e) {
+      print('Невозможно взять книгу');
+      return false;
+    }
   }
 
   @override
-  void returnBookFromLoan(Book book, int id) {
-    getReaders().where((element) => element.id == id).forEach((element) {
-      element.books.remove(book);
-    });
-    addBook(book);
+  bool returnBookFromLoan(int readerId, int bookId) {
+    try {
+      final reader = getReaders().firstWhere((reader) => reader.id == readerId);
+      final book = getBooks().firstWhere((book) => book.id == bookId);
+      reader.books.remove(book);
+      return true;
+    } catch (e) {
+      print('Невозможно вернуть книгу');
+      return false;
+    }
   }
 
   @override
-  List<Book> findBookByAuthor(String author) {
+  List<Book> findBooksByAuthor(String author) {
     List<Book> foundBooks =
         getBooks().where((element) => element.author == author).toList();
     return foundBooks;
   }
 
   @override
-  List<Book> findBookByTitle(String title) {
+  List<Book> findBooksByTitle(String title) {
     List<Book> foundBooks =
         getBooks().where((element) => element.title == title).toList();
     return foundBooks;
   }
 
   @override
-  void addBook(Book book) {
-    storage.addBookInLibrary(book);
+  void addBook(Book book, int id) {
+    getLibrarians().forEach((librarian) {
+      if (librarian.id == id) {
+        storage.addBookInLibrary(book);
+      }
+    });
   }
 
   @override
-  void removeBook(Book book) {
-    storage.removeBookFromLibrary(book);
+  void removeBook(Book book, int id) {
+    getLibrarians().forEach((librarian) {
+      if (librarian.id == id) {
+        storage.removeBookFromLibrary(book);
+      }
+    });
   }
 }
